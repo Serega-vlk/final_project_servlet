@@ -35,7 +35,7 @@ public class AddServiceServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
         int service_id = Integer.parseInt(request.getParameter("add_service_id"));
         try {
-            Service service = servicesService.getById(service_id).orElseThrow(ServiceNotFoundException::new);
+            Service service = servicesService.getById(service_id);
             if (userService.checkEnoughMoney(user, service)) {
                 request.getSession().setAttribute("user", userService.payForService(user, service));
                 user_serviceService.addServiceToUser(service, user);

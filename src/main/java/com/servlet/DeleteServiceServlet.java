@@ -4,6 +4,7 @@ import com.dao.ServiceDAO;
 import com.dao.User_ServiceDAO;
 import com.dataBase.DBConnection;
 import com.dto.User;
+import com.exeptions.ServiceNotFoundException;
 import com.exeptions.UserNotFoundException;
 import com.model.ServicesService;
 import com.model.User_ServiceService;
@@ -29,8 +30,8 @@ public class DeleteServiceServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
         int service_id = Integer.parseInt(request.getParameter("delete_service_id"));
         try {
-            user_serviceService.deleteServiceFromUser(servicesService.getById(service_id).orElseThrow(UserNotFoundException::new), user);
-        } catch (SQLException | UserNotFoundException e){
+            user_serviceService.deleteServiceFromUser(servicesService.getById(service_id), user);
+        } catch (SQLException | ServiceNotFoundException e){
             System.out.println(e);
         }
         response.sendRedirect("/user");

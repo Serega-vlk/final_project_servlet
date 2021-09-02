@@ -1,6 +1,7 @@
 package com.model;
 
 import com.dao.UserDAO;
+import com.dataBase.DBConnection;
 import com.dto.Role;
 import com.dto.Service;
 import com.dto.User;
@@ -70,8 +71,21 @@ public class UserService {
         );
     }
 
-    public void deleteById(int id) throws SQLException, UserNotFoundException {
-        dao.delete(getById(id));
+    public void deleteById(int id, User_ServiceService user_serviceService) throws SQLException, UserNotFoundException {
+        DBConnection connection = DBConnection.getDBConnection();
+        synchronized (DBConnection.class) {
+            connection.offAutoCommit();
+            connection.commit();
+            try {
+                User user = getById(id);
+                user_serviceService.deleteAllServicesFromUser(user);
+                dao.delete(user);
+                connection.onAutoCommit();
+            } catch (SQLException e){
+                connection.rollBack();
+                connection.onAutoCommit();
+            }
+        }
     }
 
     public boolean hasUsername(String username) throws SQLException {
@@ -83,17 +97,26 @@ public class UserService {
     }
 
     public Optional<User> addMoneyByUsername(String username, int money) throws SQLException, UserNotFoundException {
-        User user = getUserByUsername(username);
-        int userMoney = user.getMoney();
-        return dao.update(user.setMoney(userMoney + money));
+        DBConnection connection = DBConnection.getDBConnection();
+        synchronized (DBConnection.class) {
+            connection.offAutoCommit();
+            connection.commit();
+            Optional<User> result = Optional.empty();
+            try {
+                User user = getUserByUsername(username);
+                int userMoney = user.getMoney();
+                result = dao.update(user.setMoney(userMoney + money));
+                connection.onAutoCommit();
+            } catch (SQLException e){
+                connection.rollBack();
+                connection.onAutoCommit();
+            }
+            return result;
+        }
     }
 
-    public User payForService(User user, Service service) throws SQLException {
-        user =
-                user
-                .setMoney(user.getMoney() - service.getPrice());
-        dao.update(user);
-        return user;
+    public User payForService(User user, Service service) throws SQLException { ;
+        return dao.update(user.setMoney(user.getMoney() - service.getPrice())).orElse(null);
     }
 
     public boolean checkEnoughMoney(User user, Service service){
@@ -101,7 +124,6 @@ public class UserService {
     }
 
     public boolean isCorrectPassword(String username, String password) throws UserNotFoundException, SQLException {
-        User user = getUserByUsername(username);
-        return user.getPassword().equals(password);
+        return getUserByUsername(username).getPassword().equals(password);
     }
 }

@@ -27,4 +27,16 @@ public class User_ServiceDAO {
         statement.setInt(2, service.getId());
         statement.executeUpdate();
     }
+
+    public void deleteAllServicesFromUser(User user) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("delete from project_db.user_service where user_id=?;");
+        statement.setInt(1, user.getId());
+        statement.executeUpdate();
+    }
+
+    public void deleteAllUsersFromService(Service service) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("delete from project_db.user_service where service_id=?;");
+        statement.setInt(1, service.getId());
+        statement.executeUpdate();
+    }
 }

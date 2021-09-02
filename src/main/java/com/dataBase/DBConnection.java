@@ -34,4 +34,20 @@ public class DBConnection {
     public Connection getConnection() {
         return connection;
     }
+
+    public void offAutoCommit() throws SQLException {
+        this.connection.setAutoCommit(false);
+    }
+
+    public void onAutoCommit() throws SQLException {
+        this.connection.setAutoCommit(true);
+    }
+
+    public void rollBack() throws SQLException {
+        this.connection.rollback();
+    }
+
+    public void commit() throws SQLException {
+        this.connection.commit();
+    }
 }

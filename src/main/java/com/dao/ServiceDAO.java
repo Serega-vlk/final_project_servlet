@@ -68,9 +68,10 @@ public class ServiceDAO {
         return Optional.ofNullable(user);
     }
 
-    public void deleteById(int id) throws SQLException {
+    public Optional<Service> delete(Service service) throws SQLException {
         Statement statement = connection.createStatement();
-        statement.executeUpdate("delete from project_db.service where id=" + id +";");
+        statement.executeUpdate("delete from project_db.service where id=" + service.getId() +";");
+        return findByName(service.getName());
     }
 
     public Optional<Service> findByName(String name) throws SQLException {

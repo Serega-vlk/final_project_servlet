@@ -1,9 +1,12 @@
 package com.model;
 
 import com.dao.ServiceDAO;
+import com.dao.UserDAO;
 import com.dao.User_ServiceDAO;
+import com.dataBase.DBConnection;
 import com.dto.Service;
 import com.dto.User;
+import com.exeptions.ServiceNotFoundException;
 
 import java.sql.SQLException;
 import java.util.Comparator;
@@ -14,7 +17,7 @@ import java.util.stream.Collectors;
 public class ServicesService {
     private final ServiceDAO dao;
     
-    public ServicesService(ServiceDAO dao){
+    public ServicesService(ServiceDAO dao) throws SQLException {
         this.dao = dao;
     }
     
@@ -26,8 +29,8 @@ public class ServicesService {
         return dao.findAll();
     }
 
-    public Optional<Service> getById(int id) throws SQLException {
-        return dao.getById(id);
+    public Service getById(int id) throws SQLException, ServiceNotFoundException {
+        return dao.getById(id).orElseThrow(ServiceNotFoundException::new);
     }
 
     public List<Service> getAllSortedByID() throws SQLException {
@@ -76,8 +79,21 @@ public class ServicesService {
                 .orElseThrow(RuntimeException::new);
     }
 
-    public void deleteById(int id) throws SQLException {
-        dao.deleteById(id);
+    public void deleteById(int id, User_ServiceService user_serviceService) throws SQLException, ServiceNotFoundException {
+        DBConnection connection = DBConnection.getDBConnection();
+        synchronized (DBConnection.class) {
+            connection.offAutoCommit();
+            connection.commit();
+            try {
+                Service service = getById(id);
+                user_serviceService.deleteAllUsersFromService(service);
+                dao.delete(service);
+                connection.onAutoCommit();
+            } catch (SQLException e){
+                connection.rollBack();
+                connection.onAutoCommit();
+            }
+        }
     }
     
     public boolean hasServiceName(String name) throws SQLException {

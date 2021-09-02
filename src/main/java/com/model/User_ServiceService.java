@@ -20,4 +20,12 @@ public class User_ServiceService {
     public void deleteServiceFromUser(Service service, User user) throws SQLException {
         dao.deleteServiceFromUser(service, user);
     }
+
+    public void deleteAllServicesFromUser(User user) throws SQLException {
+        dao.deleteAllServicesFromUser(user);
+    }
+
+    public void deleteAllUsersFromService(Service service) throws SQLException {
+        dao.deleteAllUsersFromService(service);
+    }
 }
