@@ -80,8 +80,8 @@ public class ServicesService {
         dao.deleteById(id);
     }
     
-    public boolean hasService(Service service) throws SQLException {
-        return dao.findByName(service.getName()).isPresent();
+    public boolean hasServiceName(String name) throws SQLException {
+        return dao.findByName(name).isPresent();
     }
 
     public List<Service> getServicesWithOutUser(List<Service> services, User user) throws SQLException {
@@ -94,5 +94,9 @@ public class ServicesService {
 
     public List<Service> getUserServices(User user) throws SQLException {
         return dao.getUserServicesByUserId(user.getId());
+    }
+
+    public boolean priceLessThanZero(int price){
+        return price < 0;
     }
 }

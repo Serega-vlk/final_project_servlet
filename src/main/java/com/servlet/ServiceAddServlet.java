@@ -3,6 +3,8 @@ package com.servlet;
 import com.dao.ServiceDAO;
 import com.dataBase.DBConnection;
 import com.dto.Service;
+import com.dto.ValidationResults.IErrors;
+import com.dto.ValidationResults.ServiceAddErrors;
 import com.model.ServicesService;
 
 import javax.servlet.*;
@@ -26,16 +28,23 @@ public class ServiceAddServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getSession().setAttribute("addErrors", null);
         String name = request.getParameter("name");
-        String price = request.getParameter("price");
-        Service service = new Service(name, Integer.parseInt(price));
+        int price = Integer.parseInt(request.getParameter("price"));
         try {
-            if (!servicesService.hasService(service)){
-                servicesService.saveService(service);
+            IErrors errors = ServiceAddErrors.builder()
+                    .setNameEmpty(name.isEmpty())
+                    .setServiceNameExist(servicesService.hasServiceName(name))
+                    .setPriceLessThanZero(servicesService.priceLessThanZero(price));
+            if (errors.hasErrors()){
+                request.getSession().setAttribute("addErrors", errors);
+                response.sendRedirect("/admin/add");
+            } else {
+                servicesService.saveService(new Service(name, price));
+                response.sendRedirect("/admin");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        response.sendRedirect("/admin");
     }
 }

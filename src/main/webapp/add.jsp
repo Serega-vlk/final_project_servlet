@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.dto.ValidationResults.ServiceAddErrors" %><%--
   Created by IntelliJ IDEA.
   User: SeregaAsus
   Date: 30.08.2021
@@ -20,9 +20,24 @@
 <form method="POST" action="/admin/add">
     <label for="name"><fmt:message key="service.name" />:</label>
     <input name="name"  id="name">
+    <%=
+    request.getSession().getAttribute("addErrors") != null ?
+            ((ServiceAddErrors) request.getSession().getAttribute("addErrors")).isNameEmpty() ? "<div style=\"color:red\">Name can`t be empty</div>" : ""
+            : ""
+    %>
+    <%=
+    request.getSession().getAttribute("addErrors") != null ?
+            ((ServiceAddErrors) request.getSession().getAttribute("addErrors")).isServiceNameExist() ? "<div style=\"color:red\">Service name already exist</div>" : ""
+            : ""
+    %>
     <br/>
     <label for="price"><fmt:message key="service.price" />:</label>
-    <input name="price" id="price">
+    <input type="number" name="price" id="price">
+    <%=
+    request.getSession().getAttribute("addErrors") != null ?
+            ((ServiceAddErrors) request.getSession().getAttribute("addErrors")).isPriceLessThanZero() ? "<div style=\"color:red\">the price must be greater than 0</div>" : ""
+            : ""
+    %>
     <button type="submit"><fmt:message key="service.add" /></button>
 </form>
 </body>
