@@ -1,4 +1,4 @@
-<%@ page import="com.dto.RegistrationErrors" %><%--
+<%@ page import="com.dto.ValidationResults.RegistrationErrors" %><%--
   Created by IntelliJ IDEA.
   User: SeregaAsus
   Date: 31.08.2021

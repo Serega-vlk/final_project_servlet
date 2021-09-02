@@ -1,0 +1,4 @@
+# Project exclude paths
+/target/
+/.idea/
+/final_project_servlet.iml

@@ -1,4 +1,4 @@
-<%@ page import="com.dto.LoginErrors" %><%--
+<%@ page import="com.dto.ValidationResults.LoginErrors" %><%--
   Created by IntelliJ IDEA.
   User: SeregaAsus
   Date: 26.08.2021

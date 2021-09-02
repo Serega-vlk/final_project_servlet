@@ -16,24 +16,22 @@
 <html>
 <head>
     <title><fmt:message key="user.title" /></title>
-    <div class="container">
-        <a href="/user/logout">
-            <button style="margin-left:120px" type="submit" ><fmt:message key="exit" /></button>
-        </a>
-        <a href="/user/change">
-            <button style="margin-left:1px" type="submit" ><fmt:message key="change" /></button>
-        </a>
-        <a href="/user/balance">
-            <button style="margin-left:1px" type="submit" ><fmt:message key="balance" /></button>
-        </a>
-        <a style="margin-left:1px"><%=((User) request.getSession().getAttribute("user")).getMoney()%></a>
-        <a href="?language=en">
-        <button style="margin-left:20px" type="submit">EN</button>
+    <a href="/user/logout">
+        <button style="margin-left:120px" type="submit" ><fmt:message key="exit" /></button>
     </a>
-        <a href="?language=uk">
-            <button style="margin-left:1px" type="submit">UK</button>
-        </a>
-    </div>
+    <a href="/user/change">
+        <button style="margin-left:1px" type="submit" ><fmt:message key="change" /></button>
+    </a>
+    <a href="/user/balance">
+        <button style="margin-left:1px" type="submit" ><fmt:message key="balance" /></button>
+    </a>
+    <a style="margin-left:1px"><%=((User) request.getSession().getAttribute("user")).getMoney()%></a>
+    <a href="?language=en">
+    <button style="margin-left:20px" type="submit">EN</button>
+    </a>
+    <a href="?language=uk">
+        <button style="margin-left:1px" type="submit">UK</button>
+    </a>
 </head>
 <body>
 <hr />

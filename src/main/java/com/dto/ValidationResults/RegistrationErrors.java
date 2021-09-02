@@ -1,6 +1,6 @@
-package com.dto;
+package com.dto.ValidationResults;
 
-public class RegistrationErrors {
+public class RegistrationErrors implements IErrors {
     private boolean nameEmpty;
     private boolean nameInvalid;
     private boolean emailEmpty;

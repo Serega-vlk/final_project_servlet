@@ -26,7 +26,7 @@ public class UserService {
     }
 
     public User updatePassword(String username, String newPassword) throws UserNotFoundException, SQLException {
-        return dao.save(
+        return dao.update(
                 getUserByUsername(username)
                 .setPassword(newPassword)
         ).orElseThrow(UserNotFoundException::new);
@@ -88,25 +88,13 @@ public class UserService {
         return dao.update(user.setMoney(userMoney + money));
     }
 
-//    public User addServiceByUsername(String username, Service service) throws UserNotFoundException, SQLException {
-//        User user = getUserByUsername(username);
-//        payForService(user, service);
-//        user.addService(service);
-//        return dao.save(user);
-//    }
-
-    public int payForService(User user, Service service){
-        return
+    public User payForService(User user, Service service) throws SQLException {
+        user =
                 user
-                .setMoney(user.getMoney() - service.getPrice())
-                .getMoney();
+                .setMoney(user.getMoney() - service.getPrice());
+        dao.update(user);
+        return user;
     }
-
-//    public User deleteServiceByUsername(String username, Service service) throws UserNotFoundException, SQLException {
-//        User user = getUserByUsername(username);
-//        dao.deleteService(user, service);
-//        return dao.save(user);
-//    }
 
     public boolean checkEnoughMoney(User user, Service service){
         return user.getMoney() >= service.getPrice();

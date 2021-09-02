@@ -1,6 +1,6 @@
-package com.dto;
+package com.dto.ValidationResults;
 
-public class LoginErrors {
+public class LoginErrors implements IErrors {
     private boolean login;
     private boolean password;
 

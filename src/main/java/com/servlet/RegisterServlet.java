@@ -2,8 +2,8 @@ package com.servlet;
 
 import com.dao.UserDAO;
 import com.dataBase.DBConnection;
-import com.dto.RegistrationErrors;
-import com.dto.Role;
+import com.dto.ValidationResults.IErrors;
+import com.dto.ValidationResults.RegistrationErrors;
 import com.dto.User;
 import com.exeptions.UserNotFoundException;
 import com.model.UserService;
@@ -37,7 +37,7 @@ public class RegisterServlet extends HttpServlet {
                 .setLogin(request.getParameter("login"));
         String passwordRepeat = request.getParameter("repeatPass");
         try {
-            RegistrationErrors errors = RegistrationErrors.builder()
+            IErrors errors = RegistrationErrors.builder()
                     .setNameEmpty(user.getName().isEmpty())
                     .setNameInvalid(!user.getName().matches("^[A-ZА-Я][a-zа-я]+"))
                     .setEmailEmpty(user.getEmail().isEmpty())

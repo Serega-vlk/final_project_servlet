@@ -2,8 +2,7 @@ package com.servlet;
 
 import com.dao.UserDAO;
 import com.dataBase.DBConnection;
-import com.dto.LoginErrors;
-import com.dto.User;
+import com.dto.ValidationResults.LoginErrors;
 import com.exeptions.UserNotFoundException;
 import com.model.UserService;
 
