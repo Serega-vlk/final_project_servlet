@@ -5,6 +5,7 @@ import com.dao.UserDAO;
 import com.dataBase.DBConnection;
 import com.dto.Role;
 import com.dto.User;
+import com.exeptions.ServiceNotFoundException;
 import com.exeptions.UserNotFoundException;
 import com.model.ServicesService;
 import com.model.UserService;
@@ -47,6 +48,8 @@ public class BalanceServlet extends HttpServlet {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } catch (UserNotFoundException e) {
+            e.printStackTrace();
+        } catch (ServiceNotFoundException e) {
             e.printStackTrace();
         }
         response.sendRedirect("/user");

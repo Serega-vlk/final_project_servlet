@@ -26,11 +26,11 @@ public class UserService {
         return dao.getById(id).orElseThrow(UserNotFoundException::new);
     }
 
-    public User updatePassword(String username, String newPassword) throws UserNotFoundException, SQLException {
+    public Optional<User> updatePassword(String username, String newPassword) throws UserNotFoundException, SQLException {
         return dao.update(
                 getUserByUsername(username)
                 .setPassword(newPassword)
-        ).orElseThrow(UserNotFoundException::new);
+        );
     }
 
     public boolean isUserIsAdmin(String username) throws UserNotFoundException, SQLException {
@@ -115,8 +115,8 @@ public class UserService {
         }
     }
 
-    public User payForService(User user, Service service) throws SQLException { ;
-        return dao.update(user.setMoney(user.getMoney() - service.getPrice())).orElse(null);
+    public Optional<User> payForService(User user, Service service) throws SQLException {
+        return dao.update(user.setMoney(user.getMoney() - service.getPrice()));
     }
 
     public boolean checkEnoughMoney(User user, Service service){

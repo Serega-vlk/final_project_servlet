@@ -41,7 +41,7 @@ public class RegisterServlet extends HttpServlet {
                     .setNameEmpty(user.getName().isEmpty())
                     .setNameInvalid(!user.getName().matches("^[A-ZА-Я][a-zа-я]+"))
                     .setEmailEmpty(user.getEmail().isEmpty())
-                    .setEmailInvalid(!user.getEmail().matches("[\\w\\.]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+"))
+                    .setEmailInvalid(!user.getEmail().matches("[\\w\\.]{1,50}@[a-zA-Z0-9]{1,20}\\.[a-zA-Z0-9]{1,10}"))
                     .setEmailExist(userService.hasEmail(user.getEmail()))
                     .setLoginEmpty(user.getLogin().isEmpty())
                     .setLoginExist(userService.hasUsername(user.getLogin()))

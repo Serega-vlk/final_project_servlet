@@ -72,11 +72,11 @@ public class ServicesService {
         return services;
     }
 
-    public Service getCheapestService() throws SQLException {
+    public Service getCheapestService() throws SQLException, ServiceNotFoundException {
         List<Service> services = getALlServices();
         return services.stream()
                 .min(Comparator.comparingInt(Service::getPrice))
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(ServiceNotFoundException::new);
     }
 
     public void deleteById(int id, User_ServiceService user_serviceService) throws SQLException, ServiceNotFoundException {
