@@ -37,7 +37,7 @@ public class AddServiceServlet extends HttpServlet {
         try {
             Service service = servicesService.getById(service_id);
             if (userService.checkEnoughMoney(user, service)) {
-                request.getSession().setAttribute("user", userService.payForService(user, service));
+                request.getSession().setAttribute("user", userService.payForService(user, service).orElse(null));
                 user_serviceService.addServiceToUser(service, user);
             } else if (!userService.checkEnoughMoney(user, servicesService.getCheapestService())) {
                 request.getSession().setAttribute("user", userService.blockUserById(user.getId()).orElse(null));
