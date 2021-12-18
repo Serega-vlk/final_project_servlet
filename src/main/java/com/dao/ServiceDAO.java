@@ -25,7 +25,7 @@ public class ServiceDAO {
     public long getLastId() throws SQLException {
         List<Long> indexes = new ArrayList<>();
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from project_db.service;");
+        ResultSet resultSet = statement.executeQuery("select * from service;");
         while (resultSet.next()){
             indexes.add((long) resultSet.getInt("id"));
         }
@@ -41,7 +41,7 @@ public class ServiceDAO {
 
     public List<Service> findAll() throws SQLException {
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from project_db.service;");
+        ResultSet resultSet = statement.executeQuery("select * from service;");
         List<Service> result = new ArrayList<>();
         while (resultSet.next()){
             result.add(buildService(resultSet));
@@ -50,7 +50,7 @@ public class ServiceDAO {
     }
 
     public Service save(Service service) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("insert into project_db.service values (?, ?, ?)");
+        PreparedStatement statement = connection.prepareStatement("insert into service values (?, ?, ?)");
         statement.setInt(1, (int) incrementAndGetId());
         statement.setString(2, service.getName());
         statement.setInt(3, service.getPrice());
@@ -60,7 +60,7 @@ public class ServiceDAO {
 
     public Optional<Service> getById(int id) throws SQLException {
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from project_db.service where id=" + id +";");
+        ResultSet resultSet = statement.executeQuery("select * from service where id=" + id +";");
         Service user = null;
         if (resultSet.next()){
             user = buildService(resultSet);
@@ -70,13 +70,13 @@ public class ServiceDAO {
 
     public Optional<Service> delete(Service service) throws SQLException {
         Statement statement = connection.createStatement();
-        statement.executeUpdate("delete from project_db.service where id=" + service.getId() +";");
+        statement.executeUpdate("delete from service where id=" + service.getId() +";");
         return findByName(service.getName());
     }
 
     public Optional<Service> findByName(String name) throws SQLException {
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from project_db.service where name='" + name + "';");
+        ResultSet resultSet = statement.executeQuery("select * from service where name='" + name + "';");
         Service service = null;
         if (resultSet.next()){
             service = buildService(resultSet);
@@ -86,8 +86,8 @@ public class ServiceDAO {
 
     public List<Service> getUserServicesByUserId(int id) throws SQLException {
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select s.id, s.name, s.price from project_db.service as s" +
-                " join project_db.user_service as us on s.id = us.service_id where us.user_id = " + id + ";");
+        ResultSet resultSet = statement.executeQuery("select s.id, s.name, s.price from service as s" +
+                " join user_service as us on s.id = us.service_id where us.user_id = " + id + ";");
         List<Service> result = new ArrayList<>();
         while (resultSet.next()){
             result.add(buildService(resultSet));

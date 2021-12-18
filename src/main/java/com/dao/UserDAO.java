@@ -1,11 +1,8 @@
 package com.dao;
 
-import com.dataBase.DBConnection;
 import com.dto.Role;
-import com.dto.Service;
 import com.dto.User;
 
-import javax.jws.soap.SOAPBinding;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +24,7 @@ public class UserDAO {
     public long getLastId() throws SQLException {
         List<Long> indexes = new ArrayList<>();
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from project_db.user;");
+        ResultSet resultSet = statement.executeQuery("select * from users;");
         while (resultSet.next()){
             indexes.add((long) resultSet.getInt("id"));
         }
@@ -47,7 +44,7 @@ public class UserDAO {
 
     public List<User> findAll() throws SQLException {
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from project_db.user;");
+        ResultSet resultSet = statement.executeQuery("select * from users;");
         List<User> result = new ArrayList<>();
         while (resultSet.next()){
             result.add(buildUser(resultSet));
@@ -57,7 +54,7 @@ public class UserDAO {
 
     public Optional<User> findByLogin(String login) throws SQLException {
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from project_db.user where login='" + login +"';");
+        ResultSet resultSet = statement.executeQuery("select * from users where login='" + login +"';");
         User user = null;
         if (resultSet.next()){
             user = buildUser(resultSet);
@@ -66,21 +63,21 @@ public class UserDAO {
     }
 
     public Optional<User> save(User user) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("insert into project_db.user values (?, ?, ?, ?, ?, ?, ?)");
+        PreparedStatement statement = connection.prepareStatement("insert into users values (?, ?, ?, ?, ?, ?, ?)");
         statement.setInt(1, (int) incrementAndGet());
         statement.setString(2, user.getEmail());
         statement.setString(3, user.getLogin());
-        statement.setString(4, user.getName());
-        statement.setString(5, user.getPassword());
-        statement.setString(6, user.getRole().name());
-        statement.setInt(7, user.getMoney());
-        statement.executeUpdate();
+        statement.setInt(4, user.getMoney());
+        statement.setString(5, user.getName());
+        statement.setString(6, user.getPassword());
+        statement.setString(7, user.getRole().name());
+        statement.execute();
         return findByLogin(user.getLogin());
     }
 
     public Optional<User> getById(int id) throws SQLException {
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from project_db.user where id=" + id +";");
+        ResultSet resultSet = statement.executeQuery("select * from users where id=" + id +";");
         User user = null;
         if (resultSet.next()){
             user = buildUser(resultSet);
@@ -90,12 +87,12 @@ public class UserDAO {
 
     public Optional<User> delete(User user) throws SQLException {
         Statement statement = connection.createStatement();
-        statement.executeUpdate("delete from project_db.user where id=" + user.getId() +";");
+        statement.executeUpdate("delete from users where id=" + user.getId() +";");
         return findByLogin(user.getLogin());
     }
 
     public Optional<User> update(User user) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("update project_db.user set name=?, password=?, role=?, money=? where id=" + user.getId() +";");
+        PreparedStatement statement = connection.prepareStatement("update users set name=?, password=?, role=?, money=? where id=" + user.getId() +";");
         statement.setString(1, user.getName());
         statement.setString(2, user.getPassword());
         statement.setString(3, user.getRole().name());
@@ -106,7 +103,7 @@ public class UserDAO {
 
     public Optional<User> findByEmail(String email) throws SQLException {
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select * from project_db.user where email='" + email + "';");
+        ResultSet resultSet = statement.executeQuery("select * from users where email='" + email + "';");
         User user = null;
         if (resultSet.next()){
             user = buildUser(resultSet);

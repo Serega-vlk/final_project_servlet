@@ -15,27 +15,27 @@ public class User_ServiceDAO {
     }
 
     public void addServiceToUser(Service service, User user) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("insert into project_db.user_service values (?, ?);");
+        PreparedStatement statement = connection.prepareStatement("insert into user_service values (?, ?);");
         statement.setInt(1, user.getId());
         statement.setInt(2, service.getId());
         statement.executeUpdate();
     }
 
     public void deleteServiceFromUser(Service service, User user) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("delete from project_db.user_service where user_id=? and service_id=?;");
+        PreparedStatement statement = connection.prepareStatement("delete from user_service where user_id=? and service_id=?;");
         statement.setInt(1, user.getId());
         statement.setInt(2, service.getId());
         statement.executeUpdate();
     }
 
     public void deleteAllServicesFromUser(User user) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("delete from project_db.user_service where user_id=?;");
+        PreparedStatement statement = connection.prepareStatement("delete from user_service where user_id=?;");
         statement.setInt(1, user.getId());
         statement.executeUpdate();
     }
 
     public void deleteAllUsersFromService(Service service) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("delete from project_db.user_service where service_id=?;");
+        PreparedStatement statement = connection.prepareStatement("delete from user_service where service_id=?;");
         statement.setInt(1, service.getId());
         statement.executeUpdate();
     }
