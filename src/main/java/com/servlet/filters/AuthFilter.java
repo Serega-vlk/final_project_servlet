@@ -1,7 +1,5 @@
 package com.servlet.filters;
 
-import com.dto.User;
-import com.mysql.cj.xdevapi.Session;
 
 import javax.servlet.*;
 import javax.servlet.annotation.*;

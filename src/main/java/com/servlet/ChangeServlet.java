@@ -43,7 +43,7 @@ public class ChangeServlet extends HttpServlet {
             response.sendRedirect("/user/change");
         } else {
             try {
-                request.getSession().setAttribute("user", userService.updatePassword(user.getLogin(), newPass));
+                request.getSession().setAttribute("user", userService.updatePassword(user.getLogin(), newPass).orElse(null));
             } catch (UserNotFoundException e) {
                 e.printStackTrace();
             } catch (SQLException throwables) {
